@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Usuario</title>
+</head>
+<body>
+<h1 align="center">Crear usuarios</h1>
+<form align="center" action="UsuariosController" method="post">
+
+	<label>Nombre:</label>
+	<input type="text" name="nombre" required>
+	<br>
+	
+	<label>Apellido:</label>
+	<input type="text" name="apellido" required>
+	<br>
+	
+	<label>Email:</label>
+	<input type="email" name="email" required>
+	<br>
+	
+	<label>Contraseña:</label>
+	<input type="password" name="password" required>
+	<br>
+	
+	<label>Puesto:</label>
+	<select name="puesto" required>
+	<option disabled selected>Elegir rol</option>
+	<option value="administrador">Administrador</option>
+	<option value="usuario">Usuario</option>
+	</select>
+	<br>
+	
+	<input type="submit" value="Guardar" name="boton" required>
+	<br>
+	
+	<a href="UsuariosController">Ver usuarios</a>
+</form>
+
+</body>
+</html>

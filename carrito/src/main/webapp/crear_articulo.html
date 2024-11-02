@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Articulos</title>
+</head>
+<body>
+<h1 align="center">Crear articulos</h1>
+<form align="center" action="ArticulosController" method="post">
+	<label>Codigo articulo:</label>
+	<input type="number" name="codigo_articulo" required>
+	<br>
+	
+	<label>Nombre:</label>
+	<input type="text" name="nombre" required>
+	<br>
+	
+	<label>Descripcion:</label>
+	<input type="text" name="descripcion" required>
+	<br>
+	
+	<label>Precio:</label>
+	<input type="number" name="precio" required>
+	<br>
+	
+	<label>Stock:</label>
+	<input type="number" name="stock" required>
+	<br>
+	
+	<input type="submit" value="Guardar" name="boton" required>
+	<br>
+	
+	<a href="ArticulosController">Ver articulos</a>
+</form>
+</body>
+</html>
