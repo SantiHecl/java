@@ -46,6 +46,6 @@ public class UsuariosRepo {
 	}
 	
 	public List<Usuario> getUsuarios(){
-		return new ArrayList<Usuario>(this.listaUsuario);
+		return listaUsuario.stream().toList();
 	}
 }

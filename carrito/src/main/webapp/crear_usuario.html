@@ -7,6 +7,8 @@
 <body>
 <h1 align="center">Crear usuarios</h1>
 <form align="center" action="UsuariosController" method="post">
+	<input name="accion" value="nuevoUser" type="hidden">
+
 
 	<label>Nombre:</label>
 	<input type="text" name="nombre" required>
@@ -33,9 +35,6 @@
 	<br>
 	
 	<input type="submit" value="Guardar" name="boton" required>
-	<br>
-	
-	<a href="UsuariosController">Ver usuarios</a>
 </form>
 
 </body>

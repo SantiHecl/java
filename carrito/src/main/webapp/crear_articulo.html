@@ -7,6 +7,8 @@
 <body>
 <h1 align="center">Crear articulos</h1>
 <form align="center" action="ArticulosController" method="post">
+	<input name="accion" value="nuevoArt" type="hidden">
+	
 	<label>Codigo articulo:</label>
 	<input type="number" name="codigo_articulo" required>
 	<br>
@@ -30,7 +32,6 @@
 	<input type="submit" value="Guardar" name="boton" required>
 	<br>
 	
-	<a href="ArticulosController">Ver articulos</a>
 </form>
 </body>
 </html>

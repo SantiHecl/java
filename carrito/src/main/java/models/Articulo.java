@@ -2,7 +2,7 @@ package models;
 
 public class Articulo {
 	
-	private long id_articulo;
+	private Long id_articulo;
 	private Integer codigo_articulo;
 	private String nombre;
 	private String descripcion;
@@ -18,7 +18,7 @@ public class Articulo {
 
 	
 	
-	public Articulo(long id_articulo, Integer codigo_articulo, String nombre, String descripcion, Double precio,
+	public Articulo(Long id_articulo, Integer codigo_articulo, String nombre, String descripcion, Double precio,
 			Integer stock) {
 		super();
 		this.id_articulo = id_articulo;
@@ -36,7 +36,7 @@ public class Articulo {
 		return "Articulo [id_articulo=" + id_articulo + ", codigo_articulo=" + codigo_articulo + ", nombre=" + nombre + ", descripcion="
 				+ descripcion + ", precio=" + precio + ", stock=" + stock + "] ";
 	}
-	public long getId_articulo() {
+	public Long getId_articulo() {
 		return id_articulo;
 	}
 	public void setId_articulo(long id_articulo) {
