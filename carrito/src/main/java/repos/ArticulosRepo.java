@@ -2,6 +2,7 @@ package repos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import models.Articulo;
@@ -52,11 +53,37 @@ public class ArticulosRepo {
 		}
 	}
 	
+	public void update(Articulo articuloActualizado){
+		Optional<Articulo> articuloExistente = listaArt.stream()
+		        .filter(a -> a.getCodigo_articulo().equals(articuloActualizado.getCodigo_articulo()))
+		        .findFirst();
+
+		if (articuloExistente.isPresent()) {
+			 Articulo articulo = articuloExistente.get();
+		        articulo.setNombre(articuloActualizado.getNombre());
+		        articulo.setDescripcion(articuloActualizado.getDescripcion());
+		        articulo.setPrecio(articuloActualizado.getPrecio());
+		        articulo.setStock(articuloActualizado.getStock());
+			
+		}else {
+			throw new IllegalArgumentException("El artículo ya existe en la lista.");
+		}
+		
+		
+	}
+	
 	public long getSize() {
 		return listaArt.size();
 	}
 	
 	public List<Articulo> getArticulos(){
 		return listaArt.stream().toList();
+	}
+	
+	public Articulo getByCodigo(int codArti){
+		return this.listaArt.stream().
+				filter( (a)->a.getCodigo_articulo()==codArti).
+				findAny().
+				orElseThrow(() -> new IllegalArgumentException("No se encontró el artículo con el código especificado: " + codArti));
 	}
 }

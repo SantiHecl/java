@@ -13,7 +13,6 @@ public class Articulo {
 	
 	public Articulo() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	

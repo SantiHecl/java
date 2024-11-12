@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
@@ -16,10 +17,10 @@ import repos.ArticulosRepo;
 @WebServlet("/ArticulosController")
 public class ArticulosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private ArticulosRepo rArticulos ;
+    private ArticulosRepo repoArticulos ;
 	
     public ArticulosController() {
-       this.rArticulos = ArticulosRepo.getInstance();
+       this.repoArticulos = ArticulosRepo.getInstance();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,38 +31,77 @@ public class ArticulosController extends HttpServlet {
 		switch(accion) {
 		case "verArticulos" -> getArticulos(request,response);
 		case "index" -> getIndex(request,response);
+		case "edit" -> getEdit(request,response);
+		
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
 	}
-	
+
+	private void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String sCodArticulo = request.getParameter("codArticulo");
+		int cod = Integer.parseInt(sCodArticulo);
+		
+		ArticulosRepo repo = ArticulosRepo.getInstance();
+		
+		Articulo artic = repo.getByCodigo(cod);
+		
+		request.setAttribute("articulo", artic);
+		
+		request.getRequestDispatcher("editar_articulo.jsp").forward(request, response);		
+	}
+
 	private void getIndex(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.sendRedirect("index.html");
 	}
 
-	private void getArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		PrintWriter escritor = response.getWriter();
-		if(rArticulos.getArticulos().isEmpty()) {
-			escritor.append("No hay articulos cargados");
-		}
-		else {
-		for (Articulo articulo : rArticulos.getArticulos()) {
-			escritor.append(articulo.toString() + '\n');
-			}
-		}
+	private void getArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		ArticulosRepo repo = ArticulosRepo.getInstance();
+		
+		List<Articulo> listArticulos = repo.getArticulos();
+		
+		request.setAttribute("listaArt", listArticulos);
+		
+		request.getRequestDispatcher("ver_articulos.jsp").forward(request, response);
 	}
 	
+	
+	
+	
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String accion = request.getParameter("accion");
 		accion = Optional.ofNullable(accion).orElse("");
 		
 		switch(accion) {
 		case "nuevoArt" -> postArticulos(request,response);
 		case "borrarArt" -> postBorrarArticulos(request,response);
+		case "updateArt" -> postUpdateArticulos(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
+	}
+
+	
+	private void postUpdateArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Integer codigo_articulo = Integer.parseInt(request.getParameter("codigo_articulo"));
+		String nombre = request.getParameter("nombre");
+		String descripcion = request.getParameter("descripcion");
+		Double precio = Double.parseDouble(request.getParameter("precio"));
+		Integer stock = Integer.parseInt(request.getParameter("stock"));
+		
+		Articulo updateArticulo = repoArticulos.getByCodigo(codigo_articulo);
+		
+		updateArticulo.setCodigo_articulo(codigo_articulo);
+		updateArticulo.setNombre(nombre);
+		updateArticulo.setDescripcion(descripcion);
+		updateArticulo.setPrecio(precio);
+		updateArticulo.setStock(stock);
+		
+		repoArticulos.update(updateArticulo);
+		
+		response.sendRedirect("ArticulosController?accion=verArticulos");
+		
 	}
 
 	private void postBorrarArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -70,7 +110,7 @@ public class ArticulosController extends HttpServlet {
 		    Articulo bArticulo = new Articulo();
 		    bArticulo.setCodigo_articulo(codArticulo);
 
-		    this.rArticulos.borrar(bArticulo);
+		    this.repoArticulos.borrar(bArticulo);
 		    
 		    PrintWriter escritor = response.getWriter();
 			escritor.append("Borrado correctamente el articulo con el codigo: " + codArticulo);
@@ -90,7 +130,7 @@ public class ArticulosController extends HttpServlet {
 		nuevoArticulo.setPrecio(precio);
 		nuevoArticulo.setStock(stock);
 		
-		this.rArticulos.agregar(nuevoArticulo);
+		this.repoArticulos.agregar(nuevoArticulo);
 		
 		PrintWriter escritor = response.getWriter();
 		escritor.append("Creado correctamente: " + nuevoArticulo);
