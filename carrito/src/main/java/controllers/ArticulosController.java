@@ -52,7 +52,7 @@ public class ArticulosController extends HttpServlet {
 	}
 
 	private void getIndex(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		response.sendRedirect("index.html");
+		response.sendRedirect("index.jsp");
 	}
 
 	private void getArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -77,12 +77,26 @@ public class ArticulosController extends HttpServlet {
 		case "nuevoArt" -> postArticulos(request,response);
 		case "borrarArt" -> postBorrarArticulos(request,response);
 		case "updateArt" -> postUpdateArticulos(request,response);
+		case "agregarStock" -> postAgregarStock(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
 	}
 
 	
+	private void postAgregarStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Integer codigo_articulo = Integer.parseInt(request.getParameter("codigo"));
+		Integer suma_stock = Integer.parseInt(request.getParameter("sumaStock"));
+		
+		Articulo updateArticulo = repoArticulos.getByCodigo(codigo_articulo);
+		
+		int stock = updateArticulo.getStock();
+		updateArticulo.setStock(suma_stock+stock);
+		
+		repoArticulos.update(updateArticulo);
+		response.sendRedirect("ArticulosController?accion=verArticulos");
+	}
+
 	private void postUpdateArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Integer codigo_articulo = Integer.parseInt(request.getParameter("codigo_articulo"));
 		String nombre = request.getParameter("nombre");

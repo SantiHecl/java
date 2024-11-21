@@ -49,7 +49,7 @@ public class ArticulosRepo {
 			listaArt.removeIf(artExiste);
 		}
 		else {
-		 throw new IllegalArgumentException("El codigo artículo no existe.");
+		 throw new IllegalArgumentException("El codigo artículo no existe. "+ bArticulo.getCodigo_articulo());
 		}
 	}
 	
@@ -68,8 +68,6 @@ public class ArticulosRepo {
 		}else {
 			throw new IllegalArgumentException("El artículo ya existe en la lista.");
 		}
-		
-		
 	}
 	
 	public long getSize() {

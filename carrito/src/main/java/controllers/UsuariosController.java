@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.Articulo;
 import models.Usuario;
@@ -37,7 +38,7 @@ public class UsuariosController extends HttpServlet {
 	}
 	
 	private void getIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.sendRedirect("index.html");
+		response.sendRedirect("index.jsp");
 	}
 
 	private void getUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -59,11 +60,49 @@ public class UsuariosController extends HttpServlet {
 		
 		switch(accion) {
 		case "nuevoUser" -> postUsuario(request,response);
+		case "login" -> postLogin(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
 	}
 			
+	private void postLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		//usuarios creado para probar login e index
+		Usuario usuarioPrueba = new Usuario();
+		usuarioPrueba.setNombre("Santiago");
+		usuarioPrueba.setApellido("Hecl");
+		usuarioPrueba.setEmail("santiagoemanuelhecl@gmail.com");
+		usuarioPrueba.setPassword("123");
+		usuarioPrueba.setPuesto("empleado");
+		this.rUsuarios.agregarUsuario(usuarioPrueba);
+		
+		Usuario usuarioPrueba2 = new Usuario();
+		usuarioPrueba2.setNombre("Santi");
+		usuarioPrueba2.setApellido("Hecl");
+		usuarioPrueba2.setEmail("santi@gmail.com");
+		usuarioPrueba2.setPassword("123");
+		usuarioPrueba2.setPuesto("cliente");
+		this.rUsuarios.agregarUsuario(usuarioPrueba2);
+		
+		String email = request.getParameter("email");
+		String contra = request.getParameter("password");
+		
+		Usuario logUsuario = new Usuario();
+		logUsuario.setEmail(email);
+		logUsuario.setPassword(contra);
+
+		Usuario usuarioLogueado = this.rUsuarios.login(logUsuario);
+		if(usuarioLogueado != null) {
+	        HttpSession session = request.getSession();
+	        session.setAttribute("usuarioLogueado", usuarioLogueado);
+	        
+	        response.sendRedirect("index.jsp");
+	    } 
+		else {
+	        response.sendRedirect("login.jsp");
+		}	
+	}
+
 	private void postUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String nombre = request.getParameter("nombre");
 		String apellido = request.getParameter("apellido");
@@ -83,10 +122,4 @@ public class UsuariosController extends HttpServlet {
 		PrintWriter escritor = response.getWriter();
 		escritor.append("Creado correctamente: " + nuevoUsuario);
 	}
-
-
-
-		
-	
-
 }

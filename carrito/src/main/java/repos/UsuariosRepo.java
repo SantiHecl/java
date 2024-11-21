@@ -2,7 +2,9 @@ package repos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletResponse;
 
@@ -47,5 +49,13 @@ public class UsuariosRepo {
 	
 	public List<Usuario> getUsuarios(){
 		return listaUsuario.stream().toList();
+	}
+	
+	public Usuario login(Usuario loginUsuario) {
+		 return listaUsuario.stream()
+		            .filter(u -> u.getEmail().equals(loginUsuario.getEmail()) 
+		                      && u.getPassword().equals(loginUsuario.getPassword()))
+		            .findFirst()
+		            .orElse(null);
 	}
 }
