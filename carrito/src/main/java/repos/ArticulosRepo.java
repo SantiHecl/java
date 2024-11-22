@@ -82,6 +82,6 @@ public class ArticulosRepo {
 		return this.listaArt.stream().
 				filter( (a)->a.getCodigo_articulo()==codArti).
 				findAny().
-				orElseThrow(() -> new IllegalArgumentException("No se encontró el artículo con el código especificado: " + codArti));
+				orElseThrow(() -> new IllegalArgumentException("No existe el artículo con el código: " + codArti));
 	}
 }

@@ -22,7 +22,15 @@
   </c:if>
   
    <c:if test="${puesto == 'cliente'}">
-   		<h2>hola cliente</h2>     
+   		<h2>hola cliente</h2><br>
+   		<a href="CarritoController?accion=verArticulos">Carrito</a><br> 
+   		<a href="CarritoController?accion=verCarritos">Ver carrito</a><br>
+   		
+   		 <form action="CarritoController" method="post">
+			<input type="hidden" name="accion" value="nuevoCarrito">
+			<input type="hidden" name="idUsuario" value="${sessionScope.usuarioLogueado.id_usuario}">
+			<input type="submit" value="Nuevo carrito">
+			</form>
    </c:if>
 </body>
 </html>

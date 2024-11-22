@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Articulo;
+import models.Carrito;
 import models.Usuario;
 import repos.UsuariosRepo;
 
@@ -90,11 +91,14 @@ public class UsuariosController extends HttpServlet {
 		Usuario logUsuario = new Usuario();
 		logUsuario.setEmail(email);
 		logUsuario.setPassword(contra);
-
+		
 		Usuario usuarioLogueado = this.rUsuarios.login(logUsuario);
 		if(usuarioLogueado != null) {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("usuarioLogueado", usuarioLogueado);
+	        
+	        CarritoController carritoController = new CarritoController();
+			carritoController.postNuevoCarrito(request,response);
 	        
 	        response.sendRedirect("index.jsp");
 	    } 
