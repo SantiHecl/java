@@ -14,13 +14,14 @@ import javax.servlet.http.HttpSession;
 import models.Articulo;
 import models.Carrito;
 import models.Usuario;
+import repos.ArticulosRepo;
 import repos.UsuariosRepo;
 
 @WebServlet("/UsuariosController")
 public class UsuariosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UsuariosRepo rUsuarios;
-   
+	
     public UsuariosController() {
         this.rUsuarios = UsuariosRepo.getInstance();
     }
@@ -67,23 +68,12 @@ public class UsuariosController extends HttpServlet {
 		}		
 	}
 			
+
+	
+       
+    
+
 	private void postLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//usuarios creado para probar login e index
-		Usuario usuarioPrueba = new Usuario();
-		usuarioPrueba.setNombre("Santiago");
-		usuarioPrueba.setApellido("Hecl");
-		usuarioPrueba.setEmail("santiagoemanuelhecl@gmail.com");
-		usuarioPrueba.setPassword("123");
-		usuarioPrueba.setPuesto("empleado");
-		this.rUsuarios.agregarUsuario(usuarioPrueba);
-		
-		Usuario usuarioPrueba2 = new Usuario();
-		usuarioPrueba2.setNombre("Santi");
-		usuarioPrueba2.setApellido("Hecl");
-		usuarioPrueba2.setEmail("santi@gmail.com");
-		usuarioPrueba2.setPassword("123");
-		usuarioPrueba2.setPuesto("cliente");
-		this.rUsuarios.agregarUsuario(usuarioPrueba2);
 		
 		String email = request.getParameter("email");
 		String contra = request.getParameter("password");
@@ -96,9 +86,6 @@ public class UsuariosController extends HttpServlet {
 		if(usuarioLogueado != null) {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("usuarioLogueado", usuarioLogueado);
-	        
-	        CarritoController carritoController = new CarritoController();
-			carritoController.postNuevoCarrito(request,response);
 	        
 	        response.sendRedirect("index.jsp");
 	    } 

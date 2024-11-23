@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Articulo;
+import models.ArticuloCarrito;
 import models.Carrito;
 import models.Usuario;
 import repos.ArticulosRepo;
@@ -83,7 +84,7 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 	}
 
 
-	public void postNuevoCarrito(HttpServletRequest request, HttpServletResponse response) {
+	public void postNuevoCarrito(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		HttpSession session = request.getSession();
 		
@@ -91,21 +92,26 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		long idUsuario = idUser.getId_usuario();
 		Carrito nCarrito = this.repoCarrito.nuevoCarrito(idUsuario);
 		
-		session.setAttribute("idCarrito", nCarrito);
+		session.setAttribute("idCarrito", nCarrito.getId_carrito());
+		response.sendRedirect("index.jsp");
 	}
 
 
-	private void postSumaArticulo(HttpServletRequest request, HttpServletResponse response) {
-		Integer codigo_articulo = Integer.parseInt(request.getParameter("codigo_articulo"));
+	private void postSumaArticulo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Integer codigo_articulo = Integer.parseInt(request.getParameter("cod_articulo"));
+		Integer cantidad = Integer.parseInt(request.getParameter("cantidad"));
 		
-		Articulo agregarArticulo = new Articulo();
-		agregarArticulo.setCodigo_articulo(codigo_articulo);
+		ArticuloCarrito agregarArticulo = new ArticuloCarrito();
+		agregarArticulo.setCodArticulo(codigo_articulo);
+		agregarArticulo.setCantidad(cantidad);
 		
 		HttpSession session = request.getSession();
 		long idCarrito = (long) session.getAttribute("idCarrito");
 		
+		agregarArticulo.setIdCarrito(idCarrito);
 	
-		//this.repoCarrito.agregarArt(1,agregarArticulo);
+		repoCarrito.agregarArt(agregarArticulo);
+		response.sendRedirect("CarritoController?accion=verArticulos");
 		
 	}
 

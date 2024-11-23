@@ -131,6 +131,7 @@ public class ArticulosController extends HttpServlet {
 	}
 
 	private void postArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 		Integer codigo_articulo = Integer.parseInt(request.getParameter("codigo_articulo"));
 		String nombre = request.getParameter("nombre");
 		String descripcion = request.getParameter("descripcion");

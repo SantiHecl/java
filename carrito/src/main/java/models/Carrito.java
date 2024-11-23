@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Carrito {
 	private long id_carrito;
-	private List<Articulo> articulos_carrito;
+	private List<ArticuloCarrito> articulos_carrito;
 	private long id_usuario;
 	private Double precio_total;
 	
@@ -13,7 +13,7 @@ public class Carrito {
 		 this.articulos_carrito = new ArrayList<>();
 	}
 	
-	public Carrito(long id_carrito, List<Articulo> articulos_carrito, long id_usuario, Double precio_total) {
+	public Carrito(long id_carrito, List<ArticuloCarrito> articulos_carrito, long id_usuario, Double precio_total) {
 		super();
 		this.id_carrito = id_carrito;
 		this.articulos_carrito = articulos_carrito;
@@ -22,7 +22,7 @@ public class Carrito {
 	}
 	@Override
 	public String toString() {
-		return "Carrito [id_carrito=" + id_carrito + ", articulos_carrito=" + articulos_carrito + ", id_usuario="
+		return "Carrito [id_carrito=" + id_carrito + ", \n articulos_carrito=" + articulos_carrito + ", id_usuario="
 				+ id_usuario + ", precio_total=" + precio_total + "]\n";
 	}
 
@@ -34,11 +34,11 @@ public class Carrito {
 		this.id_carrito = id_carrito;
 	}
 
-	public List<Articulo> getArticulos_carrito() {
+	public List<ArticuloCarrito> getArticulos_carrito() {
 		return articulos_carrito;
 	}
 
-	public void setArticulos_carrito(List<Articulo> articulos_carrito) {
+	public void setArticulos_carrito(List<ArticuloCarrito> articulos_carrito) {
 		this.articulos_carrito = articulos_carrito;
 	}
 
