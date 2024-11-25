@@ -8,22 +8,24 @@ public class Carrito {
 	private List<ArticuloCarrito> articulos_carrito;
 	private long id_usuario;
 	private Double precio_total;
+	private boolean activo;
 	
 	public Carrito() {
 		 this.articulos_carrito = new ArrayList<>();
 	}
 	
-	public Carrito(long id_carrito, List<ArticuloCarrito> articulos_carrito, long id_usuario, Double precio_total) {
+	public Carrito(long id_carrito, List<ArticuloCarrito> articulos_carrito, long id_usuario, Double precio_total,boolean activo) {
 		super();
 		this.id_carrito = id_carrito;
 		this.articulos_carrito = articulos_carrito;
 		this.id_usuario = id_usuario;
 		this.precio_total = precio_total;
+		this.activo = activo;
 	}
 	@Override
 	public String toString() {
 		return "Carrito [id_carrito=" + id_carrito + ", \n articulos_carrito=" + articulos_carrito + ", id_usuario="
-				+ id_usuario + ", precio_total=" + precio_total + "]\n";
+				+ id_usuario + ", precio_total=" + precio_total + ", activo= "+ activo +"]\n";
 	}
 
 	public long getId_carrito() {
@@ -56,6 +58,14 @@ public class Carrito {
 
 	public void setPrecio_total(Double precio_total) {
 		this.precio_total = precio_total;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 	
 	

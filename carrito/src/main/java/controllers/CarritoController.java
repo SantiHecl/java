@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public class CarritoController extends HttpServlet {
 		switch(accion) {
 		case "verArticulos" -> getArticulos(request,response);
 		case "verCarritos" -> getCarritos(request,response);
+		case "verTodosCarritos" -> getTodosCarritos(request,response);
+		
 		case "index" -> getIndex(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
@@ -43,15 +46,29 @@ public class CarritoController extends HttpServlet {
 	}
 
 
-	private void getCarritos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void getTodosCarritos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CarritosRepo repo = CarritosRepo.getInstance();
 		
 		List<Carrito> listCarritos = repo.getCarritos();
 		
 		request.setAttribute("listaCarr", listCarritos);
 		
-		PrintWriter escritor = response.getWriter();
-		escritor.append("carrito: " + listCarritos);
+		request.getRequestDispatcher("ver_carrito.jsp").forward(request, response);
+	}
+
+
+	private void getCarritos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		CarritosRepo repo = CarritosRepo.getInstance();
+		
+		HttpSession session = request.getSession();
+		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		long idUsuario = idUser.getId_usuario();
+		
+		List<Carrito> listCarritos = repo.getCarritosPorUsuario(idUsuario);
+		
+		request.setAttribute("listaCarr", listCarritos);
+		
+		request.getRequestDispatcher("ver_carrito.jsp").forward(request, response);
 	}
 
 
@@ -78,9 +95,27 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		switch(accion) {
 		case "agregarAlCarrito" -> postSumaArticulo(request,response);
 		case "nuevoCarrito" -> postNuevoCarrito(request,response);
+		case "finCarrito" -> postFinCarrito(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
+	}
+
+
+	private void postFinCarrito(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
+		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		long idUsuario = idUser.getId_usuario();
+		
+		long idCarrito = (long) session.getAttribute("idCarrito");
+		
+		Date fecha = new Date();
+		
+		double saldo = idUser.getSaldo();
+		
+		repoCarrito.finalizarCarrito(idCarrito, idUsuario, saldo, fecha);
+		
 	}
 
 
@@ -100,10 +135,12 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 	private void postSumaArticulo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Integer codigo_articulo = Integer.parseInt(request.getParameter("cod_articulo"));
 		Integer cantidad = Integer.parseInt(request.getParameter("cantidad"));
+		String nombre = request.getParameter("nombre");
 		
 		ArticuloCarrito agregarArticulo = new ArticuloCarrito();
 		agregarArticulo.setCodArticulo(codigo_articulo);
 		agregarArticulo.setCantidad(cantidad);
+		agregarArticulo.setNombre(nombre);
 		
 		HttpSession session = request.getSession();
 		long idCarrito = (long) session.getAttribute("idCarrito");

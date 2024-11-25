@@ -27,8 +27,8 @@ public class UsuariosRepo {
 	}
 	
 	public void agregarUsuario(Usuario nUsuario) {
-		Predicate<Usuario> usrExiste = u-> u.getEmail().equals(nUsuario.getEmail());
-		boolean existe = listaUsuario.stream().anyMatch(usrExiste);
+		Predicate<Usuario> userExiste = u-> u.getEmail().equals(nUsuario.getEmail());
+		boolean existe = listaUsuario.stream().anyMatch(userExiste);
 		
 		if(existe) {
 			
@@ -57,5 +57,39 @@ public class UsuariosRepo {
 		                      && u.getPassword().equals(loginUsuario.getPassword()))
 		            .findFirst()
 		            .orElse(null);
+	}
+	
+	public void agregarSaldo(long idUser, double saldo) {
+		Predicate<Usuario> userExiste = u-> u.getId_usuario() == idUser;
+		
+		Usuario user = listaUsuario.stream()
+				.filter(userExiste)
+				.findFirst()
+				.orElse(null);
+		
+		user.setSaldo(user.getSaldo() + saldo);
+	}
+	
+	public void transferirSaldo(double saldo, String email, long idUsuario) {
+		Predicate<Usuario> userExiste = u-> u.getId_usuario() == idUsuario;
+		
+		Usuario user = listaUsuario.stream()
+				.filter(userExiste)
+				.findFirst()
+				.orElse(null);
+	
+		Predicate<Usuario> userEmail = u-> u.getEmail().equals(email);
+		Usuario user2 = listaUsuario.stream()
+				.filter(userEmail)
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("No existe el email"));
+		
+		if(user.getSaldo() >= saldo && saldo>0) {
+				user.setSaldo(user.getSaldo() - saldo);
+				user2.setSaldo(user2.getSaldo() + saldo);				
+		}
+		else {
+			throw new IllegalArgumentException("Saldo insuficiente");
+		}
 	}
 }

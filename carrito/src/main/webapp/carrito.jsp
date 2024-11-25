@@ -28,7 +28,7 @@
 			<td><c:out value="${articulo.descripcion}"/></td>
 			<td><c:out value="${articulo.precio}"/></td>
 			
-			<td>	<form action="CarritoController" method="post">
+			<td><form action="CarritoController" method="post">
 			
 			<select name="cantidad" required>
                 <option value="" disabled selected>Elegir cantidad</option>
@@ -36,9 +36,9 @@
                     <option value="${cantidad}">${cantidad}</option>
                 </c:forEach>
             </select>
-            
 		
 			<input type="hidden" name="accion" value="agregarAlCarrito">
+			<input type="hidden" name="nombre" value="${articulo.nombre}">
 			<input type="hidden" name="cantidad" value="${cantidad}">
 			<input type="hidden" name="cod_articulo" value="${articulo.codigo_articulo}">
 			<input type="submit" value="Agregar al carrito">
@@ -47,6 +47,7 @@
 		</c:forEach>	
 	</tbody>	
 	</table><br>
+	
 	<a href="index.jsp">Inicio</a><br>
 	<a href="CarritoController?accion=verCarritos">Ver carrito</a><br>
 </body>

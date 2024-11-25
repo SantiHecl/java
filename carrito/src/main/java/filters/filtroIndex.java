@@ -106,7 +106,6 @@ public class filtroIndex extends HttpFilter implements Filter {
 	            }
 			}
 		}
-       // httpResp.sendRedirect("login.jsp");
         chain.doFilter(request, response); 
 	}
 

@@ -1,7 +1,7 @@
 package repos;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -18,7 +18,7 @@ import repos.ArticulosRepo;
 public class CarritosRepo {
 	private static CarritosRepo singleton;
 	
-	public static CarritosRepo getInstance() {
+		public static CarritosRepo getInstance() {
 		if (singleton == null) {
 			singleton = new CarritosRepo();
 		}
@@ -64,7 +64,7 @@ public class CarritosRepo {
 	        articuloExistente.setCantidad(articuloExistente.getCantidad() + sArticulo.getCantidad());
 	    } else {
 	    	//si no existe lo agrego
-	        carrito.getArticulos_carrito().add(new ArticuloCarrito(sArticulo.getCodArticulo(), sArticulo.getCantidad(), sArticulo.getIdCarrito()));
+	        carrito.getArticulos_carrito().add(new ArticuloCarrito(sArticulo.getCodArticulo(),sArticulo.getNombre(), sArticulo.getCantidad(), sArticulo.getIdCarrito()));
 	    }
 		
 		//resto la cantidad al stock del articulo
@@ -88,17 +88,70 @@ public class CarritosRepo {
 	
 	public Carrito nuevoCarrito(long idUsuario) {
 		long ultCarrito = listaCarr.stream().map(a->a.getId_carrito()).max(Long::compare).orElse(0L);
+		
+		if (ultCarrito != 0) {
+	        Carrito carritoActivo = listaCarr.stream()
+                 .filter(c -> c.getId_carrito() == ultCarrito && c.isActivo())
+                 .findFirst()
+                 .orElse(null);
+	        
+	        //al crear un carrito nuevo se da de baja el anterior 
+	        if (carritoActivo != null) {
+	            carritoActivo.setActivo(false);
+	            
+	            ArticulosRepo articulosRepo = ArticulosRepo.getInstance();
+	            
+	            for (ArticuloCarrito articuloCarrito : carritoActivo.getArticulos_carrito()) {
+	                Articulo articulo = articulosRepo.getArticulos().stream()
+                          .filter(a -> a.getCodigo_articulo() == articuloCarrito.getCodArticulo())
+                          .findFirst()
+                          .orElseThrow(() -> new IllegalArgumentException("Artículo no encontrado: " + articuloCarrito.getCodArticulo()));
+	                // devuelve stock a los articulos
+	                articulo.setStock(articulo.getStock() + articuloCarrito.getCantidad());
+	            }
+	        }
+	    }
+					
 		Carrito nCarrito = new Carrito();
 		
 		nCarrito.setId_carrito(ultCarrito+1);
 		nCarrito.setId_usuario(idUsuario);
+		nCarrito.setActivo(true);
+		nCarrito.setArticulos_carrito(new ArrayList<>());
+		nCarrito.setPrecio_total(0.0);
 		
 		listaCarr.add(nCarrito);
+		
 		return nCarrito;
 	}
 	
 	public List<Carrito> getCarritos(){
 		return listaCarr.stream().toList();
+	}
+	
+	public List<Carrito> getCarritosPorUsuario(long idUsuario){
+		Predicate<Carrito> carritoUser = a-> a.getId_usuario() == idUsuario;
+		
+		return listaCarr.stream()
+				.filter(carritoUser)
+				.toList();
+	}
+	
+	public void finalizarCarrito(long idCarrito, long idUsuario, double saldo, Date fecha) {
+		
+		 Predicate<Carrito> carrExiste = a-> a.getId_carrito() == idCarrito;
+		 Carrito carrito = listaCarr.stream()
+	             .filter(carrExiste)
+	             .findFirst()
+	             .orElseThrow(() -> new IllegalArgumentException("No existe el carrito"));
+		/*
+		if(carrito.getPrecio_total()<=saldo) {
+			
+			
+			
+		}*/
+		
+		
 	}
 }
 

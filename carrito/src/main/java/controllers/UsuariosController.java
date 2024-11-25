@@ -63,15 +63,38 @@ public class UsuariosController extends HttpServlet {
 		switch(accion) {
 		case "nuevoUser" -> postUsuario(request,response);
 		case "login" -> postLogin(request,response);
+		case "cargarSaldo" -> postCargarSaldo(request,response);
+		case "transferirSaldo" -> postTransferirSaldo(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
 	}
 			
 
-	
-       
-    
+
+	private void postTransferirSaldo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		double saldo = Double.parseDouble(request.getParameter("saldo"));
+		String email = request.getParameter("email");
+		
+		HttpSession session = request.getSession();
+		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		long idUsuario = idUser.getId_usuario();
+		
+		rUsuarios.transferirSaldo(saldo,email,idUsuario);
+		
+		response.sendRedirect("saldo.jsp");
+	}
+
+	private void postCargarSaldo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		double saldo = Double.parseDouble(request.getParameter("saldo"));
+		
+		HttpSession session = request.getSession();
+		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		long idUsuario = idUser.getId_usuario();
+		
+		rUsuarios.agregarSaldo(idUsuario, saldo);
+		response.sendRedirect("saldo.jsp");
+	}
 
 	private void postLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		

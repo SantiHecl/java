@@ -19,18 +19,25 @@
 		<br>
 		<a href="crear_usuario.html">Crear Usuario</a><br>
 		<a href="UsuariosController?accion=verUsuarios">Ver Usuarios</a><br>
+		<br>
+		<a href="CarritoController?accion=verTodosCarritos">Ver carritos</a><br>
   </c:if>
   
    <c:if test="${puesto == 'cliente'}">
-   		<h2>hola cliente</h2><br>
-   		<a href="CarritoController?accion=verArticulos">Carrito</a><br> 
-   		<a href="CarritoController?accion=verCarritos">Ver carrito</a><br>
+   		<h2>Hola cliente</h2><br>
+   		<a href="CarritoController?accion=verArticulos">Agregar articulos al carrito</a><br> 
+   		<a href="CarritoController?accion=verCarritos">Mi carrito</a><br>
    		
-   		 <form action="CarritoController" method="post">
+   		<form action="CarritoController" method="post">
 			<input type="hidden" name="accion" value="nuevoCarrito">
 			<input type="hidden" name="idUsuario" value="${sessionScope.usuarioLogueado.id_usuario}">
 			<input type="submit" value="Nuevo carrito">
-			</form>
+		</form>
+   		
+   		<a href="saldo.jsp">Cargar o transferir saldo</a><br>
+   		
+   		
+   		
    </c:if>
 </body>
 </html>

@@ -2,6 +2,7 @@ package models;
 
 public class ArticuloCarrito {
 	 private int codArticulo;
+	 private String nombre;
 	 private int cantidad;
 	 private long idCarrito;
 
@@ -29,17 +30,28 @@ public class ArticuloCarrito {
 		this.idCarrito = idCarrito;
 	}
 
-	@Override
-	public String toString() {
-		return "ArticuloCarrito [codArticulo=" + codArticulo + ", cantidad=" + cantidad + ", idCarrito=" + idCarrito
-				+ "]\n";
+	public String getNombre() {
+		return nombre;
 	}
 
-	public ArticuloCarrito(int codArticulo, int cantidad, long idCarrito) {
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	
+	
+	public ArticuloCarrito(int codArticulo, String nombre, int cantidad, long idCarrito) {
 		super();
 		this.codArticulo = codArticulo;
+		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.idCarrito = idCarrito;
+	}
+
+	@Override
+	public String toString() {
+		return "ArticuloCarrito [codArticulo=" + codArticulo + ", nombre=" + nombre + ", cantidad=" + cantidad
+				+ ", idCarrito=" + idCarrito + "]";
 	}
 
 	public ArticuloCarrito() {
