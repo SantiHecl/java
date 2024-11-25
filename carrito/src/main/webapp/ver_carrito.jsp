@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Carrito</title>
 </head>
-<body>
+<body align="center">
 	<h1 align="center">Mi carrito</h1>
 	
 	<table border="1" align="center">
@@ -34,9 +34,12 @@
 		</c:forEach>	
 	</tbody>	
 	</table>
-<center>
-<center><a href="">Finalizar Compra</a><br>
-<a href="ArticulosController?accion=index">Inicio</a><br></center>
-</center>
+
+<form method="post" action="CarritoController">
+	<input type="hidden" name="accion" value="finCarrito">
+	
+	<input type="submit" value="Finalizar compra">
+</form><br>
+<a href="ArticulosController?accion=index">Inicio</a><br>
 </body>
 </html>

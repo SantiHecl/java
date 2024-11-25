@@ -1,6 +1,6 @@
 package models;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Venta {
 	private long id_venta;
@@ -14,6 +14,11 @@ public class Venta {
 		this.id_carrito = id_carrito;
 		this.fecha_venta = fecha_compra;
 	}
+	
+	public Venta() {
+		super();
+	}
+
 	@Override
 	public String toString() {
 		return "Venta [id_venta=" + id_venta + ", id_carrito=" + id_carrito + ", fecha_compra=" + fecha_venta + "]\n";

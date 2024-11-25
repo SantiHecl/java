@@ -36,7 +36,7 @@
    		
    		<a href="saldo.jsp">Cargar o transferir saldo</a><br>
    		
-   		
+   		<a href="CarritoController?accion=verCompras">Ver compras</a>
    		
    </c:if>
 </body>

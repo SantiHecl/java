@@ -17,8 +17,10 @@ import models.Articulo;
 import models.ArticuloCarrito;
 import models.Carrito;
 import models.Usuario;
+import models.Venta;
 import repos.ArticulosRepo;
 import repos.CarritosRepo;
+import repos.VentasRepo;
 
 @WebServlet("/CarritoController")
 public class CarritoController extends HttpServlet {
@@ -38,6 +40,7 @@ public class CarritoController extends HttpServlet {
 		case "verArticulos" -> getArticulos(request,response);
 		case "verCarritos" -> getCarritos(request,response);
 		case "verTodosCarritos" -> getTodosCarritos(request,response);
+		case "verCompras" -> getCompras(request,response);
 		
 		case "index" -> getIndex(request,response);
 		
@@ -46,10 +49,25 @@ public class CarritoController extends HttpServlet {
 	}
 
 
-	private void getTodosCarritos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CarritosRepo repo = CarritosRepo.getInstance();
+	private void getCompras(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		VentasRepo repoVentas = VentasRepo.getInstance();
 		
-		List<Carrito> listCarritos = repo.getCarritos();
+		PrintWriter escritor = response.getWriter();
+		if(repoVentas.getVentas().isEmpty()) {
+			escritor.append("No hay usuarios cargados");
+		}
+		else {
+			for (Venta venta : repoVentas.getVentas()) {
+				escritor.append(venta.toString() + '\n');
+			}
+		}
+	}
+
+
+	private void getTodosCarritos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		List<Carrito> listCarritos = repoCarrito.getCarritos();
 		
 		request.setAttribute("listaCarr", listCarritos);
 		
@@ -58,13 +76,13 @@ public class CarritoController extends HttpServlet {
 
 
 	private void getCarritos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		CarritosRepo repo = CarritosRepo.getInstance();
+		
 		
 		HttpSession session = request.getSession();
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
 		long idUsuario = idUser.getId_usuario();
 		
-		List<Carrito> listCarritos = repo.getCarritosPorUsuario(idUsuario);
+		List<Carrito> listCarritos = repoCarrito.getCarritosPorUsuario(idUsuario);
 		
 		request.setAttribute("listaCarr", listCarritos);
 		
@@ -87,6 +105,7 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		request.getRequestDispatcher("carrito.jsp").forward(request, response);
 	}
 
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
@@ -102,7 +121,7 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 	}
 
 
-	private void postFinCarrito(HttpServletRequest request, HttpServletResponse response) {
+	private void postFinCarrito(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
@@ -115,7 +134,7 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		double saldo = idUser.getSaldo();
 		
 		repoCarrito.finalizarCarrito(idCarrito, idUsuario, saldo, fecha);
-		
+		response.sendRedirect("index.jsp");
 	}
 
 

@@ -13,6 +13,8 @@ import org.apache.el.stream.Optional;
 import models.Articulo;
 import models.ArticuloCarrito;
 import models.Carrito;
+import models.Usuario;
+import models.Venta;
 import repos.ArticulosRepo;
 
 public class CarritosRepo {
@@ -130,10 +132,13 @@ public class CarritosRepo {
 	}
 	
 	public List<Carrito> getCarritosPorUsuario(long idUsuario){
-		Predicate<Carrito> carritoUser = a-> a.getId_usuario() == idUsuario;
+		long ultCarrito = listaCarr.stream().map(a->a.getId_carrito()).max(Long::compare).orElse(0L);
 		
+		if(ultCarrito == 0L) {
+			new IllegalArgumentException("No existen carritos");
+		}
 		return listaCarr.stream()
-				.filter(carritoUser)
+				.filter(c->c.getId_carrito()==ultCarrito)
 				.toList();
 	}
 	
@@ -144,12 +149,34 @@ public class CarritosRepo {
 	             .filter(carrExiste)
 	             .findFirst()
 	             .orElseThrow(() -> new IllegalArgumentException("No existe el carrito"));
-		/*
-		if(carrito.getPrecio_total()<=saldo) {
+		
+		if(carrito.getPrecio_total()<=saldo) {	
+			//desactivar carrito
+				carrito.setActivo(false);
+		
+				UsuariosRepo usuariosRepo = UsuariosRepo.getInstance();
+				List<Usuario> listaUsr = usuariosRepo.getUsuarios();
+				 
+				Predicate<Usuario> user = u -> u.getId_usuario() == idUsuario ;
+				Usuario usuar = listaUsr.stream()
+						.filter(user)
+						.findFirst()
+						.orElse(null);
+				//descontar el precio al saldo del usuario
+				usuar.setSaldo(usuar.getSaldo() - carrito.getPrecio_total());
+				
+				//guardar la venta
+				Venta nVenta = new Venta();
+				nVenta.setFecha_compra(fecha);
+				nVenta.setId_carrito(idCarrito);
 			
-			
-			
-		}*/
+				VentasRepo.getInstance().agregarVenta(nVenta);
+	
+		}
+		else {
+			throw new IllegalArgumentException("Saldo insuficiente");
+		}		
+		
 		
 		
 	}

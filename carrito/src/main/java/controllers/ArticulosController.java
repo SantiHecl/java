@@ -88,6 +88,11 @@ public class ArticulosController extends HttpServlet {
 		Integer codigo_articulo = Integer.parseInt(request.getParameter("codigo"));
 		Integer suma_stock = Integer.parseInt(request.getParameter("sumaStock"));
 		
+		if(suma_stock<=0) {
+			response.sendError(400,"Numero inválido: "+ suma_stock);
+			return;
+		}
+		
 		Articulo updateArticulo = repoArticulos.getByCodigo(codigo_articulo);
 		
 		int stock = updateArticulo.getStock();
@@ -103,6 +108,11 @@ public class ArticulosController extends HttpServlet {
 		String descripcion = request.getParameter("descripcion");
 		Double precio = Double.parseDouble(request.getParameter("precio"));
 		Integer stock = Integer.parseInt(request.getParameter("stock"));
+		
+		if(stock<=0 || precio<=0) {
+			response.sendError(400,"Numero inválido");
+			return;
+		}
 		
 		Articulo updateArticulo = repoArticulos.getByCodigo(codigo_articulo);
 		
@@ -137,6 +147,11 @@ public class ArticulosController extends HttpServlet {
 		String descripcion = request.getParameter("descripcion");
 		Double precio = Double.parseDouble(request.getParameter("precio"));
 		Integer stock = Integer.parseInt(request.getParameter("stock"));
+		
+		if(stock<=0 || precio<=0) {
+			response.sendError(400,"Numero inválido");
+			return;
+		}
 		
 		Articulo nuevoArticulo = new Articulo();
 		nuevoArticulo.setCodigo_articulo(codigo_articulo);

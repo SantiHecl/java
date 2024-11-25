@@ -76,6 +76,11 @@ public class UsuariosController extends HttpServlet {
 		double saldo = Double.parseDouble(request.getParameter("saldo"));
 		String email = request.getParameter("email");
 		
+		if(saldo<=0) {
+			response.sendError(400,"Numero inválido");
+			return;
+		}
+		
 		HttpSession session = request.getSession();
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
 		long idUsuario = idUser.getId_usuario();
@@ -87,6 +92,11 @@ public class UsuariosController extends HttpServlet {
 
 	private void postCargarSaldo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		double saldo = Double.parseDouble(request.getParameter("saldo"));
+		
+		if(saldo<=0) {
+			response.sendError(400,"Numero inválido");
+			return;
+		}
 		
 		HttpSession session = request.getSession();
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
