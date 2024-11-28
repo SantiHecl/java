@@ -48,19 +48,19 @@ public class CarritoController extends HttpServlet {
 		}		
 	}
 
-
-	private void getCompras(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//ver compras por usuario, ver todas las ventas
+	private void getCompras(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		VentasRepo repoVentas = VentasRepo.getInstance();
 		
-		PrintWriter escritor = response.getWriter();
-		if(repoVentas.getVentas().isEmpty()) {
-			escritor.append("No hay usuarios cargados");
-		}
-		else {
-			for (Venta venta : repoVentas.getVentas()) {
-				escritor.append(venta.toString() + '\n');
-			}
-		}
+		HttpSession session = request.getSession();
+		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		long idUsuario = idUser.getId_usuario();
+		
+		List<Venta> listVentas = repoVentas.getVentas(idUsuario);
+		
+		request.setAttribute("listaVentas", listVentas);
+		request.getRequestDispatcher("ver_compras.jsp").forward(request, response);
+		
 	}
 
 
@@ -71,7 +71,7 @@ public class CarritoController extends HttpServlet {
 		
 		request.setAttribute("listaCarr", listCarritos);
 		
-		request.getRequestDispatcher("ver_carrito.jsp").forward(request, response);
+		request.getRequestDispatcher("ver_carritos.jsp").forward(request, response);
 	}
 
 
@@ -80,13 +80,14 @@ public class CarritoController extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		Long idCarrito =  (Long) session.getAttribute("idCarrito");
 		long idUsuario = idUser.getId_usuario();
 		
-		List<Carrito> listCarritos = repoCarrito.getCarritosPorUsuario(idUsuario);
+		List<Carrito> listCarritos = repoCarrito.getCarritosPorUsuario(idUsuario,idCarrito);
 		
 		request.setAttribute("listaCarr", listCarritos);
 		
-		request.getRequestDispatcher("ver_carrito.jsp").forward(request, response);
+		request.getRequestDispatcher("ver_carritos.jsp").forward(request, response);
 	}
 
 
@@ -99,8 +100,15 @@ public class CarritoController extends HttpServlet {
 ArticulosRepo repo = ArticulosRepo.getInstance();
 		
 		List<Articulo> listArticulos = repo.getArticulos();
-		
 		request.setAttribute("listaArt", listArticulos);
+		
+		HttpSession session = request.getSession();
+		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
+		Long idCarrito =  (Long) session.getAttribute("idCarrito");
+		long idUsuario = idUser.getId_usuario();
+		
+		List<Carrito> listCarritos = repoCarrito.getCarritosPorUsuario(idUsuario,idCarrito);
+		request.setAttribute("listaCarr", listCarritos);		
 		
 		request.getRequestDispatcher("carrito.jsp").forward(request, response);
 	}
@@ -126,14 +134,15 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
 		long idUsuario = idUser.getId_usuario();
-		
 		long idCarrito = (long) session.getAttribute("idCarrito");
-		
 		Date fecha = new Date();
-		
 		double saldo = idUser.getSaldo();
 		
 		repoCarrito.finalizarCarrito(idCarrito, idUsuario, saldo, fecha);
+		
+		Carrito nuevoCarrito = repoCarrito.nuevoCarrito(idUsuario);
+		session.setAttribute("idCarrito", nuevoCarrito.getId_carrito());
+		
 		response.sendRedirect("index.jsp");
 	}
 
@@ -142,12 +151,13 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		
 		HttpSession session = request.getSession();
 		
+		session.removeAttribute("idCarrito");
+		
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
 		long idUsuario = idUser.getId_usuario();
 		Carrito nCarrito = this.repoCarrito.nuevoCarrito(idUsuario);
 		
 		session.setAttribute("idCarrito", nCarrito.getId_carrito());
-		response.sendRedirect("index.jsp");
 	}
 
 

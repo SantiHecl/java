@@ -8,11 +8,11 @@ public class Venta {
 	private Date fecha_venta;
 	
 	
-	public Venta(long id_venta, long id_carrito, Date fecha_compra) {
+	public Venta(long id_venta, long id_carrito, Date fecha_venta) {
 		super();
 		this.id_venta = id_venta;
 		this.id_carrito = id_carrito;
-		this.fecha_venta = fecha_compra;
+		this.fecha_venta = fecha_venta;
 	}
 	
 	public Venta() {
@@ -21,7 +21,7 @@ public class Venta {
 
 	@Override
 	public String toString() {
-		return "Venta [id_venta=" + id_venta + ", id_carrito=" + id_carrito + ", fecha_compra=" + fecha_venta + "]\n";
+		return "Venta [id_venta=" + id_venta + ", id_carrito=" + id_carrito + ", fecha_venta=" + fecha_venta + "]\n";
 	}
 	public long getId_venta() {
 		return id_venta;
@@ -35,11 +35,11 @@ public class Venta {
 	public void setId_carrito(long id_carrito) {
 		this.id_carrito = id_carrito;
 	}
-	public Date getFecha_compra() {
+	public Date getFecha_venta() {
 		return fecha_venta;
 	}
-	public void setFecha_compra(Date fecha_compra) {
-		this.fecha_venta = fecha_compra;
+	public void setFecha_venta(Date fecha_venta) {
+		this.fecha_venta = fecha_venta;
 	}
 	
 	

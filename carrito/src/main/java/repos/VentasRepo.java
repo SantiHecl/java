@@ -2,7 +2,9 @@ package repos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
+import models.Carrito;
 import models.Venta;
 
 public class VentasRepo {
@@ -31,10 +33,21 @@ public class VentasRepo {
 		listaVenta.add(nVenta);
 	}
 	
-	public List<Venta> getVentas() {
+	public List<Venta> getVentas(long idUsuario) {
+		Predicate<Carrito> carrito = c->c.getId_usuario() == idUsuario;
 		
-		return listaVenta.stream().toList();
+		List<Long> idsCarritos = CarritosRepo.getInstance().getCarritos().stream()
+	            .filter(carrito)
+	            .map(Carrito::getId_carrito)
+	            .toList();
+		
+		return listaVenta.stream()
+				.filter(v -> idsCarritos.contains(v.getId_carrito()))
+				.toList();
 	}
 	
+	public List<Venta> getVentasTotales(){
+		return listaVenta.stream().toList();
+	}
 	
 }

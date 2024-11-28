@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <title>Login</title>
 </head>
-<body>
-<h1 align="center">Iniciar sesión</h1>
-<form align="center" action="UsuariosController" method="post"> 
+<body align="center">
+<h1>Iniciar sesión</h1>
+<form action="UsuariosController" method="post"> 
 	<input name="accion" value="login" type="hidden">
 	
 	<label>Email:</label>
@@ -21,5 +21,6 @@
 
 	<input type="submit" value="Iniciar">
 </form>
+<a href="crear_usuario.jsp">Registrarse</a>
 </body>
 </html> 

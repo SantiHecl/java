@@ -7,9 +7,8 @@
 <meta charset="UTF-8">
 <title>Saldo</title>
 </head>
-<body>
-<center>
-<table border="2" >
+<body align="center">
+<table border="1" align="center">
 <tr>
 	<td>
 		<h3>Saldo disponible:</h3>
@@ -51,6 +50,5 @@
 </tr>
 </table>
 <a href="index.jsp">Inicio</a><br>
-</center>
 </body>
 </html>

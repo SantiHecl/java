@@ -7,9 +7,16 @@
 <meta charset="UTF-8">
 <title>Ver Articulos</title>
 </head>
-<body>
-<h1 align="center">Todos los articulos</h1>
-	
+<body align="center">
+<h1>Todos los articulos</h1>
+
+<c:choose>
+	<c:when test="${empty listaArt}">
+        <p>No hay articulos registrados</p>
+    </c:when>
+    
+    <c:otherwise>
+	<div>
 	<table border="1" align="center">
 	<thead> 
 		<tr>
@@ -44,8 +51,11 @@
 		</c:forEach>	
 	</tbody>	
 	</table>
-<center>
+	</div>
+	</c:otherwise>
+</c:choose>
+
 <a href="ArticulosController?accion=index">Inicio</a><br>
-</center>
+
 </body>
 </html>

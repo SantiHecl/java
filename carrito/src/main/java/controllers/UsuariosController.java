@@ -15,6 +15,7 @@ import models.Articulo;
 import models.Carrito;
 import models.Usuario;
 import repos.ArticulosRepo;
+import repos.CarritosRepo;
 import repos.UsuariosRepo;
 
 @WebServlet("/UsuariosController")
@@ -34,6 +35,7 @@ public class UsuariosController extends HttpServlet {
 		switch(accion) {
 		case "verUsuarios" -> getUsuarios(request,response);
 		case "index" -> getIndex(request,response);
+		case "cerrarSession" -> cerrarSession(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}			
@@ -54,6 +56,25 @@ public class UsuariosController extends HttpServlet {
 			}
 		}
 	}
+	
+	public void cerrarSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		HttpSession session = request.getSession(false);
+		
+		if (session != null) {
+	        
+	        session.removeAttribute("usuarioLogueado");
+	        session.removeAttribute("idCarrito");
+	        
+	        session.invalidate();
+	    }
+
+	    HttpSession nuevaSesion = request.getSession(true);
+		
+		response.sendRedirect("login.jsp");
+	}
+	
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -116,15 +137,41 @@ public class UsuariosController extends HttpServlet {
 		logUsuario.setPassword(contra);
 		
 		Usuario usuarioLogueado = this.rUsuarios.login(logUsuario);
-		if(usuarioLogueado != null) {
-	        HttpSession session = request.getSession();
-	        session.setAttribute("usuarioLogueado", usuarioLogueado);
-	        
-	        response.sendRedirect("index.jsp");
-	    } 
-		else {
-	        response.sendRedirect("login.jsp");
-		}	
+		
+		
+		  if (usuarioLogueado != null && "cliente".equals(usuarioLogueado.getPuesto())) {
+		        HttpSession session = request.getSession(true);
+		        session.setAttribute("usuarioLogueado", usuarioLogueado);
+
+		        // Obtener o crear carrito
+		        CarritosRepo carritoRepo = CarritosRepo.getInstance();
+		        Carrito carritoExistente = carritoRepo.verificarCarrito(usuarioLogueado.getId_usuario());
+
+		        if (carritoExistente == null) {
+		            // Crear un nuevo carrito
+		            Carrito nuevoCarrito = carritoRepo.nuevoCarrito(usuarioLogueado.getId_usuario());
+		            session.setAttribute("idCarrito", nuevoCarrito.getId_carrito());
+		        } else {
+		            // Usar carrito existente
+		            session.setAttribute("idCarrito", carritoExistente.getId_carrito());
+		        }
+
+		        response.sendRedirect("index.jsp");
+		        return;
+		    } 
+		  
+		  else if(usuarioLogueado != null && "empleado".equals(usuarioLogueado.getPuesto())) {
+			  HttpSession session = request.getSession();
+		      session.setAttribute("usuarioLogueado", usuarioLogueado);
+		      
+		      response.sendRedirect("index.jsp");
+		      return;
+		  }
+		  
+		  else {
+	        response.sendError(400, "Email o contraseña incorrecto");
+	        return;
+	    }
 	}
 
 	private void postUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -133,6 +180,12 @@ public class UsuariosController extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String puesto = request.getParameter("puesto");
+		
+		if(nombre == null || apellido == null || email == null || password == null || puesto == null ||
+		        nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || password.isEmpty() || puesto.isEmpty()) {
+			response.sendError(400,"Todos los campos son obligatorios");
+			return;
+		}
 		
 		Usuario nuevoUsuario = new Usuario();
 		nuevoUsuario.setNombre(nombre);
@@ -143,7 +196,14 @@ public class UsuariosController extends HttpServlet {
 		
 		this.rUsuarios.agregarUsuario(nuevoUsuario);
 		
-		PrintWriter escritor = response.getWriter();
-		escritor.append("Creado correctamente: " + nuevoUsuario);
+		HttpSession session = request.getSession(false); 
+	    if (session == null) {
+	    
+	        response.sendRedirect("login.jsp");
+	    } 
+	    else {
+	        session.invalidate(); 
+	        response.sendRedirect("login.jsp");
+	    }
 	}
 }

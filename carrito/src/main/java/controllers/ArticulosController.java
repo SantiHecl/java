@@ -109,8 +109,16 @@ public class ArticulosController extends HttpServlet {
 		Double precio = Double.parseDouble(request.getParameter("precio"));
 		Integer stock = Integer.parseInt(request.getParameter("stock"));
 		
-		if(stock<=0 || precio<=0) {
-			response.sendError(400,"Numero inválido");
+		if(codigo_articulo<=0) {
+			response.sendError(400,"El codigo articulo es  inválido");
+			return;
+		}
+		if(precio<=0 ) {
+			response.sendError(400,"Precio inválido");
+			return;
+		}
+		if(stock<=0) {
+			response.sendError(400,"Numero stock inválido");
 			return;
 		}
 		
@@ -129,7 +137,7 @@ public class ArticulosController extends HttpServlet {
 	}
 
 	private void postBorrarArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		  Integer codArticulo = Integer.parseInt(request.getParameter("cod_articulo"));
+		  Integer codArticulo = Integer.parseInt(request.getParameter("codigo_articulo"));
 		  
 		    Articulo bArticulo = new Articulo();
 		    bArticulo.setCodigo_articulo(codArticulo);
@@ -148,8 +156,16 @@ public class ArticulosController extends HttpServlet {
 		Double precio = Double.parseDouble(request.getParameter("precio"));
 		Integer stock = Integer.parseInt(request.getParameter("stock"));
 		
-		if(stock<=0 || precio<=0) {
-			response.sendError(400,"Numero inválido");
+		if(codigo_articulo<=0) {
+			response.sendError(400,"El codigo articulo es  inválido");
+			return;
+		}
+		if(precio<=0 ) {
+			response.sendError(400,"Precio inválido");
+			return;
+		}
+		if(stock<=0) {
+			response.sendError(400,"Numero stock inválido");
 			return;
 		}
 		

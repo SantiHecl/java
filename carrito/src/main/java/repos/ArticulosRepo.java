@@ -31,7 +31,7 @@ public class ArticulosRepo {
 		boolean existe = listaArt.stream().anyMatch(artExiste);
 		
 		if (existe) {
-		   throw new IllegalArgumentException("El artículo ya existe en la lista.");
+		   throw new IllegalArgumentException("El codigo artículo ya existe en la lista.");
 		}
 		
 		long ultId = listaArt.stream().map(a->a.getId_articulo()).max(Long::compare).orElse(0L);
@@ -42,14 +42,11 @@ public class ArticulosRepo {
 	}
 	
 	public void borrar(Articulo bArticulo) {
-		Predicate<Articulo> artExiste = a-> a.getCodigo_articulo() == bArticulo.getCodigo_articulo();
+		Predicate<Articulo> artExiste = a-> a.getCodigo_articulo().equals(bArticulo.getCodigo_articulo());
 		
-		boolean existe = listaArt.stream().anyMatch(artExiste);
-		if (existe) {
-			listaArt.removeIf(artExiste);
-		}
-		else {
-		 throw new IllegalArgumentException("El codigo artículo no existe. "+ bArticulo.getCodigo_articulo());
+		boolean eliminado = listaArt.removeIf(artExiste);
+		if (!eliminado) {
+			 throw new IllegalArgumentException("El artículo no existe. Codigo: "+ bArticulo.getCodigo_articulo());
 		}
 	}
 	

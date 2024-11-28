@@ -27,11 +27,11 @@
 	<br>
 	
 	<label>Precio:</label>
-	<input type="number" name="precio" value="${articulo.precio}" required>
+	<input type="number" name="precio" min="1" value="${articulo.precio}" required>
 	<br>
 	
 	<label>Stock:</label>
-	<input type="number" name="stock" value="${articulo.stock}" required>
+	<input type="number" name="stock" min="1" value="${articulo.stock}" required>
 	<br>
 	
 	<input type="submit" value="Guardar" name="boton" required>

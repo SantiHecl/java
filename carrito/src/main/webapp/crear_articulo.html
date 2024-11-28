@@ -10,7 +10,7 @@
 	<input name="accion" value="nuevoArt" type="hidden">
 	
 	<label>Codigo articulo:</label>
-	<input type="number" name="codigo_articulo" required>
+	<input type="number" name="codigo_articulo" min="1" required>
 	<br>
 	
 	<label>Nombre:</label>
@@ -22,11 +22,11 @@
 	<br>
 	
 	<label>Precio:</label>
-	<input type="number" name="precio" required>
+	<input type="number" name="precio" min="1" required>
 	<br>
 	
 	<label>Stock:</label>
-	<input type="number" name="stock" required>
+	<input type="number" name="stock" min="1" required>
 	<br>
 	
 	<input type="submit" value="Guardar" name="boton" required>

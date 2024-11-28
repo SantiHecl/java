@@ -7,9 +7,16 @@
 <meta charset="UTF-8">
 <title>Carrito</title>
 </head>
-<body>
-<h1 align="center">Articulos</h1>
-	
+<body align="center">
+<div>
+<h1>Articulos</h1>
+
+<c:choose>
+	<c:when test="${empty listaArt}">
+       <p>No hay articulos registrados</p>
+   </c:when>
+   
+    <c:otherwise>
 	<table border="1" align="center">
 	<thead> 
 		<tr>
@@ -47,8 +54,44 @@
 		</c:forEach>	
 	</tbody>	
 	</table><br>
+	</c:otherwise>
+</c:choose>
+</div>
 	
+	
+	
+<div>
+<h1 align="center">Mi carrito</h1>
+	
+	<table border="1" align="center">
+	<thead> 
+		<tr>
+		<th>Articulos carrito</th> 
+		<th>Precio total</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach var="carrito" items="${listaCarr}">
+		<tr>
+			<td><c:forEach var="articulo" items="${carrito.articulos_carrito}">
+	        Código: <c:out value="${articulo.codArticulo}" />, 
+	        Nombre: <c:out value="${articulo.nombre}" />,
+	        Cantidad: <c:out value="${articulo.cantidad}" /><br />
+	    	</c:forEach>
+	    	</td>
+			<td><c:out value="${carrito.precio_total}"/></td>
+			
+		</tr>		
+		</c:forEach>	
+	</tbody>	
+	</table>
+
+<form method="post" action="CarritoController">
+	<input type="hidden" name="accion" value="finCarrito">
+	
+	<input type="submit" value="Finalizar compra">
+</form><br>
+</div>
 	<a href="index.jsp">Inicio</a><br>
-	<a href="CarritoController?accion=verCarritos">Ver carrito</a><br>
 </body>
 </html>

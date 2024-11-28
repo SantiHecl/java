@@ -52,12 +52,13 @@ public class filtroIndex extends HttpFilter implements Filter {
 			usuarioPrueba2.setEmail("santi@gmail.com");
 			usuarioPrueba2.setPassword("123");
 			usuarioPrueba2.setPuesto("cliente");
+			usuarioPrueba2.setSaldo(10000.0);
 			rUsuarios.agregarUsuario(usuarioPrueba2);
 			
 			Articulo nuevoArticulo1 = new Articulo();
 			nuevoArticulo1.setCodigo_articulo(111);
 			nuevoArticulo1.setNombre("fideos");
-			nuevoArticulo1.setDescripcion("descripcion");
+			nuevoArticulo1.setDescripcion("fideos tallarines");
 			nuevoArticulo1.setPrecio(1000.0);
 			nuevoArticulo1.setStock(50);
 			repoArticulos.agregar(nuevoArticulo1);
@@ -65,10 +66,18 @@ public class filtroIndex extends HttpFilter implements Filter {
 			Articulo nuevoArticulo2 = new Articulo();
 			nuevoArticulo2.setCodigo_articulo(222);
 			nuevoArticulo2.setNombre("pan");
-			nuevoArticulo2.setDescripcion("descripcion pan");
+			nuevoArticulo2.setDescripcion("pan de panaderia");
 			nuevoArticulo2.setPrecio(500.0);
 			nuevoArticulo2.setStock(15);
 			repoArticulos.agregar(nuevoArticulo2);
+			
+			Articulo nuevoArticulo3 = new Articulo();
+			nuevoArticulo3.setCodigo_articulo(333);
+			nuevoArticulo3.setNombre("carne");
+			nuevoArticulo3.setDescripcion("carne para asado");
+			nuevoArticulo3.setPrecio(1500.0);
+			nuevoArticulo3.setStock(10);
+			repoArticulos.agregar(nuevoArticulo3);
 	}
 	
 	@SuppressWarnings("null")
@@ -83,8 +92,8 @@ public class filtroIndex extends HttpFilter implements Filter {
 			session = httpReq.getSession();	
 			
 			String uri = httpReq.getRequestURI();
-	        if (uri.endsWith("login.jsp") || uri.endsWith("UsuariosController")) {
-	            chain.doFilter(request, response); // Permitir el acceso sin filtrado
+	        if (uri.endsWith("login.jsp") || uri.endsWith("UsuariosController") || uri.endsWith("crear_usuario.jsp")) {
+	            chain.doFilter(request, response); // permitir el acceso sin filtrado
 	            return;
 	        }
 			
