@@ -28,12 +28,48 @@ public class CarritosRepo {
 		}
 		return singleton;
 	}
-	
+			
 	private List<Carrito> listaCarr;
 	
+	ArticulosRepo articulosRepo = ArticulosRepo.getInstance();
+    List<Articulo> listaArt = articulosRepo.getArticulos();
 	
 	private CarritosRepo() {
 		this.listaCarr = new ArrayList<Carrito>();
+	}
+	
+	
+	public boolean eliminarArticulo(long idCarrito, int codArticulo) {
+		Predicate<Carrito> carr = c -> c.getId_carrito() == idCarrito;
+	    Carrito carrito = listaCarr.stream()
+	        .filter(carr)
+	        .findFirst()
+	        .orElse(null);
+
+	    if (carrito != null) {
+	    	Predicate<Articulo> art = c -> c.getCodigo_articulo()==codArticulo;
+	    	Articulo articulo = listaArt.stream()
+	    			.filter(art)
+	    			.findFirst()
+	    			.orElse(null);
+	    	
+	    	Predicate<ArticuloCarrito> artCarr = (a -> a.getCodArticulo() == codArticulo);
+	    	ArticuloCarrito articuloEliminado = carrito.getArticulos_carrito().stream()
+	                .filter(artCarr)
+	                .findFirst()
+	                .orElse(null);
+
+	            if (articuloEliminado != null) {
+	            	Double precio = articulo.getPrecio() * articuloEliminado.getCantidad();
+	            	
+	                //restar el precio del artículo
+	                carrito.setPrecio_total(carrito.getPrecio_total() - precio);
+
+	                //eliminar el artículo del carrito
+	                return carrito.getArticulos_carrito().remove(articuloEliminado);
+	            }
+	        }
+	    return false;
 	}
 	
 	
@@ -101,7 +137,6 @@ public class CarritosRepo {
 	
 	public Carrito nuevoCarrito(long idUsuario) {
 		long ultCarrito = listaCarr.stream()
-				.filter(c->c.getId_usuario()==idUsuario)
 				.map(a->a.getId_carrito())
 				.max(Long::compare)
 				.orElse(0L);

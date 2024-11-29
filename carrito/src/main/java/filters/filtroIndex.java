@@ -92,7 +92,7 @@ public class filtroIndex extends HttpFilter implements Filter {
 			session = httpReq.getSession();	
 			
 			String uri = httpReq.getRequestURI();
-	        if (uri.endsWith("login.jsp") || uri.endsWith("UsuariosController") || uri.endsWith("crear_usuario.jsp")) {
+	        if (uri.endsWith("login.jsp") || uri.endsWith("UsuariosController") || uri.endsWith("crear_usuario.jsp") || uri.endsWith("style.css")) {
 	            chain.doFilter(request, response); // permitir el acceso sin filtrado
 	            return;
 	        }

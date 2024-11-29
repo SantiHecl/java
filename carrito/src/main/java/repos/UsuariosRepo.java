@@ -35,7 +35,10 @@ public class UsuariosRepo {
 			return;
 		}
 		else {
-		long ultId = listaUsuario.stream().map(u->u.getId_usuario()).max(Long::compare).orElse(0L);
+		long ultId = listaUsuario.stream()
+				.map(u->u.getId_usuario())
+				.max(Long::compare)
+				.orElse(0L);
 		
 		nUsuario.setId_usuario(ultId+1);
 		nUsuario.setSaldo(0D);

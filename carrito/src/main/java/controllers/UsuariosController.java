@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
@@ -45,16 +46,13 @@ public class UsuariosController extends HttpServlet {
 		response.sendRedirect("index.jsp");
 	}
 
-	private void getUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		PrintWriter escritor = response.getWriter();
-		if(rUsuarios.getUsuarios().isEmpty()) {
-			escritor.append("No hay usuarios cargados");
-		}
-		else {
-			for (Usuario usuario : rUsuarios.getUsuarios()) {
-				escritor.append(usuario.toString() + '\n');
-			}
-		}
+	private void getUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
+		List<Usuario> listUsuarios = rUsuarios.getUsuarios();
+		
+		request.setAttribute("listaUser", listUsuarios);
+		
+		request.getRequestDispatcher("ver_usuarios.jsp").forward(request, response);
 	}
 	
 	public void cerrarSession(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -26,9 +26,11 @@ import repos.VentasRepo;
 public class CarritoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
       private CarritosRepo repoCarrito;
+      private VentasRepo repoVentas;
 	
     public CarritoController() {
         this.repoCarrito = CarritosRepo.getInstance();
+        this.repoVentas = VentasRepo.getInstance();
     }
 
 	
@@ -41,6 +43,7 @@ public class CarritoController extends HttpServlet {
 		case "verCarritos" -> getCarritos(request,response);
 		case "verTodosCarritos" -> getTodosCarritos(request,response);
 		case "verCompras" -> getCompras(request,response);
+		case "verTodasVentas" -> getVentasTotales(request,response);
 		
 		case "index" -> getIndex(request,response);
 		
@@ -48,9 +51,15 @@ public class CarritoController extends HttpServlet {
 		}		
 	}
 
-//ver compras por usuario, ver todas las ventas
+	private void getVentasTotales(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		List<Venta> listVentas = repoVentas.getVentasTotales();
+		
+		request.setAttribute("listaVentas", listVentas);
+		request.getRequestDispatcher("ver_compras.jsp").forward(request, response);		
+	}
+
 	private void getCompras(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		VentasRepo repoVentas = VentasRepo.getInstance();
 		
 		HttpSession session = request.getSession();
 		Usuario idUser = (Usuario) session.getAttribute("usuarioLogueado");
@@ -123,9 +132,28 @@ ArticulosRepo repo = ArticulosRepo.getInstance();
 		case "agregarAlCarrito" -> postSumaArticulo(request,response);
 		case "nuevoCarrito" -> postNuevoCarrito(request,response);
 		case "finCarrito" -> postFinCarrito(request,response);
+		case "borrarArtList" -> postBorrarArtList(request,response);
 		
 		default -> response.sendError(404, "No existe " + accion);
 		}		
+	}
+
+
+	private void postBorrarArtList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		 Integer codigoArticulo = Integer.parseInt(request.getParameter("codigo"));
+		    
+		    HttpSession session = request.getSession();
+		    long idCarrito = (long) session.getAttribute("idCarrito");
+		    
+		    boolean eliminado = repoCarrito.eliminarArticulo(idCarrito, codigoArticulo);
+
+		    if (eliminado) {
+		        response.sendRedirect("CarritoController?accion=verArticulos");
+		    } else {
+		        response.sendError(400, "No se pudo eliminar el artículo del carrito");
+		    }
+		
 	}
 
 

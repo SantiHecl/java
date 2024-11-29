@@ -5,12 +5,13 @@
 <html> 
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
 <title>Editar Articulos</title>
 </head>
 <body>
 <h1 align="center">Editar Articulo</h1><br>
 	
-<form align="center" action="ArticulosController" method="post">
+<form align="center" action="ArticulosController" method="post" class="formulario">
 	<input name="accion" value="updateArt" type="hidden">
 	<input type="hidden" name="codigo_articulo" value="${articulo.codigo_articulo}"  >
 	

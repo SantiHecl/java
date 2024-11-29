@@ -5,8 +5,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
 <title>Saldo</title>
 </head>
+
+<header>
+	  <nav>
+	    <ul class="menu">
+	      <li><a href="index.jsp">Inicio</a></li>
+	      <li><a href="CarritoController?accion=verArticulos">Artículos</a></li>
+	      <li><a href="CarritoController?accion=verCompras">Ver Compras</a></li>
+	      <li><a href="saldo.jsp">Saldo</a></li>
+	      <li><a href="UsuariosController?accion=cerrarSession">Cerrar Sesión</a></li>
+	    </ul>
+	  </nav>
+</header>
+
 <body align="center">
 <table border="1" align="center">
 <tr>
@@ -17,7 +31,7 @@
 
 	<td>
 	<h1>Cargar Saldo</h1>
-		<form action="UsuariosController" method="post">
+		<form action="UsuariosController" method="post" class="formularioS">
 		<input name="accion" value="cargarSaldo" type="hidden">
 			
 			<label>Cantidad a sumar:</label>
@@ -31,7 +45,7 @@
 
 	<td>
 	<h1>Transferir Saldo</h1>
-		<form action="UsuariosController" method="post">
+		<form action="UsuariosController" method="post" class="formularioS">
 		<input name="accion" value="transferirSaldo" type="hidden">
 			
 			<label>Cantidad a transferir:</label>
@@ -49,6 +63,5 @@
 	</td>
 </tr>
 </table>
-<a href="index.jsp">Inicio</a><br>
 </body>
 </html>

@@ -1,0 +1,235 @@
+@charset "UTF-8";
+
+body:not(label){
+	background-color:  #f8f9fa;
+	align-content: center;
+	margin: auto;
+	text-align: center;  
+}
+
+header {
+  background-color:#6666ff;
+  padding: 20px;
+}
+
+.menu {
+  list-style-type: none; 
+  margin: 0;
+  padding: 0;
+  display: flex; 
+  justify-content: center; 
+}
+
+.menu li {
+  position: relative; 
+  margin: 0 15px;
+}
+
+.menu a {
+  color: white; 
+  text-decoration: none; 
+  font-size: 18px;
+}
+
+.menu a:hover {
+  color: #000000; 
+}
+
+.dropdown-menu {
+  list-style-type: none;
+  margin: 10;
+  padding: 0;
+  position: absolute; 
+  top: 100%; 
+  left: 0;
+  background-color: #4d4dff;
+  display: none; 
+  z-index: 10; 
+}
+
+.dropdown-menu li {
+  width: 100px; 
+}
+
+.dropdown-menu a {
+  padding: 10px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block; 
+}
+
+
+label,td,tr{
+	font-size:15px;
+	font-family: Verdana, sans-serif;
+
+}
+
+input,select{
+	font-size:15px;
+	font-family: Verdana, sans-serif;
+	width: 100%;
+}
+input[type="submit"] {
+  display: inline-block; 
+  background-color: #b3b3ff; 
+  color: white; 
+  text-decoration: none; 
+  padding: 7px 14px; 
+  border-radius: 5px; 
+  text-align: center; 
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #8080ff;
+
+}
+.eliminar{
+	vertical-align: middle;
+	display: inline-block; 
+  padding: 1px 2px;
+	font-size: 10px;
+	text-align:center;
+	height: 12px;
+	line-height: 1;
+	text-decoration: none; 
+	margin:0px;
+}
+
+.formulario{
+  border: 2px solid black; 
+  border-radius: 10px; 
+  padding: 20px; 
+  width: 400px; 
+  margin: 20px auto; 
+}
+.formularioS{
+	
+  padding: 10px; 
+  width: 300px; 
+  margin: 20px auto; 
+}
+.btn {
+  display: inline-block; 
+  background-color: #b3b3ff; 
+  color: white;
+  text-decoration: none; 
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  font-size: 16px; 
+  text-align: center; 
+  cursor: pointer; 
+  border: none; 
+  transition: background-color 0.3s ease; 
+}
+
+.btn:hover {
+  background-color: #8080ff; 
+}
+
+.carrito{
+	margin: auto;
+	width: 50%;
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column; 
+  gap: 20px; 
+  align-items: center; 
+}
+
+.fila {
+  display: flex;
+  gap: 30px; 
+}
+
+table {
+  width: 100%; /* Ocupa el ancho del contenedor */
+  border-collapse: collapse; /* Quita los espacios entre bordes */
+  background-color: #f7f7f7; /* Fondo gris claro */
+  font-family: Arial, sans-serif; /* Fuente básica */
+  font-size: 16px;
+}
+
+th, td {
+  border: 1px solid #ccc; /* Bordes gris claro */
+  padding: 10px; /* Espaciado interno */
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+th {
+  background-color: #e0e0e0; /* Fondo gris más oscuro para encabezados */
+  font-weight: bold; /* Texto en negrita */
+}
+
+.tablas-contenedor {
+  display: flex; /* Organiza elementos en una fila */
+  justify-content: space-between; /* Espacio entre las tablas */
+  gap: 20px; /* Espaciado entre tablas */
+  align-items: flex-start; /* Alinea las tablas en la parte superior */
+  padding: 20px;
+}
+
+
+.tabla-usuarios {
+  width: 35%; /* Tabla de usuarios más estrecha */
+}
+caption {
+  caption-side: top; /* Posición: top (por defecto) o bottom */
+  font-size: 18px;
+  font-weight: bold;
+  color: #333; /* Color del texto */
+  margin-bottom: 10px; /* Espacio debajo del título */
+  text-align: center; /* Centrar el título */
+}
+
+.tabla-articulos {
+  width: 50%; /* Más ancha */
+  border-collapse: collapse;
+  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+
+/* Contenedor de tabla del carrito y formulario */
+.tabla-carrito-contenedor {
+  width: 50%; /* Más estrecha */
+  display: flex;
+  flex-direction: column; /* Apila tabla y formulario verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  gap: 20px; /* Espaciado entre tabla y formulario */
+}
+
+/* Tabla del carrito */
+.tabla-carrito {
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  border-collapse: collapse;
+  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Botón del formulario */
+.form-finalizar {
+  text-align: center; /* Centra el formulario */
+}

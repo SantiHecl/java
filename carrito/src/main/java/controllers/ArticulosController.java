@@ -144,8 +144,7 @@ public class ArticulosController extends HttpServlet {
 
 		    this.repoArticulos.borrar(bArticulo);
 		    
-		    PrintWriter escritor = response.getWriter();
-			escritor.append("Borrado correctamente el articulo con el codigo: " + codArticulo);
+		    response.sendRedirect("ArticulosController?accion=verArticulos");
 	}
 
 	private void postArticulos(HttpServletRequest request, HttpServletResponse response) throws IOException {

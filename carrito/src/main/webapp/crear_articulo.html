@@ -2,11 +2,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
 <title>Articulos</title>
 </head>
+ <header>
+	  <nav>
+	    <ul class="menu">
+	      <li><a href="index.jsp">Inicio</a></li>
+	      <li><a href="crear_articulo.html">Crear Artículos</a></li>
+	      <li><a href="crear_usuario.jsp">Crear Usuario</a></li>
+	      <li class="dropdown">
+	        <a href="#">Ver Registros</a>
+	       		<ul class="dropdown-menu">
+	       		  <li><a href="ArticulosController?accion=verArticulos">Artículos</a></li>
+		          <li><a href="UsuariosController?accion=verUsuarios">Usuarios</a></li>
+		          <li><a href="CarritoController?accion=verTodasVentas">Ventas</a></li>
+		          <li><a href="CarritoController?accion=verTodosCarritos">Carritos</a></li>
+		        </ul>
+	      </li>
+	      <li><a href="UsuariosController?accion=cerrarSession">Cerrar Sesión</a></li>
+	    </ul>
+	  </nav>
+  </header>
 <body>
 <h1 align="center">Crear articulos</h1>
-<form align="center" action="ArticulosController" method="post">
+<form align="center" action="ArticulosController" method="post" class="formulario">
 	<input name="accion" value="nuevoArt" type="hidden">
 	
 	<label>Codigo articulo:</label>
@@ -28,7 +48,7 @@
 	<label>Stock:</label>
 	<input type="number" name="stock" min="1" required>
 	<br>
-	
+	<br>
 	<input type="submit" value="Guardar" name="boton" required>
 	<br>
 	

@@ -5,8 +5,28 @@
 <html> 
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
 <title>Ver Articulos</title>
 </head>
+ <header>
+	  <nav>
+	    <ul class="menu">
+	      <li><a href="index.jsp">Inicio</a></li>
+	      <li><a href="crear_articulo.html">Crear Artículos</a></li>
+	      <li><a href="crear_usuario.jsp">Crear Usuario</a></li>
+	      <li class="dropdown">
+	        <a href="#">Ver Registros</a>
+	       		<ul class="dropdown-menu">
+	       		  <li><a href="ArticulosController?accion=verArticulos">Artículos</a></li>
+		          <li><a href="UsuariosController?accion=verUsuarios">Usuarios</a></li>
+		          <li><a href="CarritoController?accion=verTodasVentas">Ventas</a></li>
+		          <li><a href="CarritoController?accion=verTodosCarritos">Carritos</a></li>
+		        </ul>
+	      </li>
+	      <li><a href="UsuariosController?accion=cerrarSession">Cerrar Sesión</a></li>
+	    </ul>
+	  </nav>
+  </header>
 <body align="center">
 <h1>Todos los articulos</h1>
 
@@ -54,8 +74,5 @@
 	</div>
 	</c:otherwise>
 </c:choose>
-
-<a href="ArticulosController?accion=index">Inicio</a><br>
-
 </body>
 </html>
